@@ -1,0 +1,16 @@
+{
+  "name": "spla3roulette",
+  "description": "スプラトゥーン3の武器ルーレットBOTです。",
+  "main": "main.js",
+  "scripts": {
+    "start": "node --env-file=.env main.js"
+  },
+  "dependencies": {
+    "discord.js": "^14.17.3",
+    "express": "^4.21.2"
+  },
+  "engines": {
+    "node": "^22.12.0"
+  },
+  "license": "MIT"
+}
