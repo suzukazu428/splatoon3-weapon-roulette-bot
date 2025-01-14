@@ -1,23 +1,15 @@
-const http = require("http")
+import express from "express"
+const app = express()
+const port = process.env.PORT || 3001
 
-const server = http.createServer((req, res) => {
-  if (req.method == "POST") {
-    console.log('post')
-    var data = ""
-    req.on("data", (chunk) => data += chunk)
-    .on("end", () => {
-      if (!data) {
-        res.end("No post data")
-        return
-      }
-      console.log('send:', data)
-      res.end()
-    })
-  } else if (req.method == "GET") {
-    console.log('get')
-    res.writeHead(200, { 'Content-Type': 'text/plain'})
-    res.end("Discord Bot is active now\n");
-  }
+app.get('/', (req, res) => {
+  res.send('I am alive')
 })
+const server = app.listen(port, () => {
+  console.log('Server is running.')
+})
+function keepAlive() {
+  server.keepAliveTimeout = 0
+}
 
-module.exports = server
+export default keepAlive
