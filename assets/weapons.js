@@ -655,7 +655,8 @@ const summer2024 = [
   },
 ]
 const allWeapon  = autumn2022.concat(winter2022,spring2023,summer2023,autumn2023,winter2023,spring2024,summer2024)
-module.exports = {
+
+const weapons = {
   autumn2022,
   winter2022,
   spring2023,
@@ -666,3 +667,4 @@ module.exports = {
   summer2024,
   allWeapon
 }
+export { weapons }

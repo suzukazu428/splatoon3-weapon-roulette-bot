@@ -1,5 +1,5 @@
-const { SlashCommandBuilder, ChannelType, REST, Routes } = require("discord.js")
-const { weaponDistribution, weaponUnification } = require("./functions.js")
+import { SlashCommandBuilder, ChannelType, REST, Routes } from "discord.js"
+import { weaponDistribution, weaponUnification } from "./functions.js"
 
 // コマンド一覧
 const info = {
@@ -95,21 +95,19 @@ const commandList = [
 
 
 // コマンド情報を登録する
-const rest = new REST({ version: '10' }).setToken(process.env.DISCORD_BOT_TOKEN);
+try {
+  const rest = new REST({ version: '10' }).setToken(process.env.DISCORD_BOT_TOKEN)
+  await rest.put(Routes.applicationCommands(process.env.CLIENT_ID),{ body: commandList })
+  console.log('コマンド追加完了!')
+} catch (e) {
+  console.error('コマンド追加失敗', e)
+}
 
-(async () => {
-  try {
-    await rest.put(Routes.applicationCommands(process.env.CLIENT_ID),{ body: commandList })
-    console.log('コマンド追加完了!')
-  } catch (e) {
-    console.error('コマンド追加失敗', e)
-  }
-})();
-
-module.exports = {
+const commands = {
   info,
   reaction,
   newweapon,
   roulette,
   unification
 }
+export { commands }

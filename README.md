@@ -1,8 +1,6 @@
-# 存在意義
-- DiscordBotを構築する際のdev環境。本番はGlitch。
-
+# Splatoon3WeaponRouletteBot
 ## 使い方
-- `yarn start`または`node main.js`
+- `yarn start`
 
 ## 新武器追加時処理追加フロー
 - `weapons.js`に新しい配列を作り、エキスポートする。

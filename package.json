@@ -1,6 +1,7 @@
 {
   "name": "spla3roulette",
   "description": "スプラトゥーン3の武器ルーレットBOTです。",
+  "type": "module",
   "main": "main.js",
   "scripts": {
     "start": "node --env-file=.env main.js"

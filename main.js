@@ -1,5 +1,8 @@
-const server = require("./server.js")
-server.listen(3000)
+import server from './server.js'
+server()
+import { Client, GatewayIntentBits, Partials } from "discord.js"
+import { weapons } from "./assets/weapons.js"
+import { sendReply, outputRandomWeapon, outputNoDuplicationRandomWeapon } from "./assets/functions.js"
 
 const token = process.env.DISCORD_BOT_TOKEN
 if (token == undefined) {
@@ -7,7 +10,6 @@ if (token == undefined) {
   process.exit(0);
 }
 
-const { Client, GatewayIntentBits, Partials } = require("discord.js");
 const client = new Client({
   intents: Object.values(GatewayIntentBits).reduce((a, b) => a | b),
   partials: [Partials.Message, Partials.Channel, Partials.Reaction]
@@ -24,8 +26,6 @@ client.on("ready", () => {
 const emojiArray = ['1️⃣','2️⃣','3️⃣','4️⃣','5️⃣','6️⃣','7️⃣','8️⃣']
 let isActionFlag = false
 const botMessage = /ルーレットするブキ数のリアクションを押してください。|2023春シーズン新武器のルーレットです。|2023夏シーズン新武器のルーレットです。|2023秋シーズン新武器のルーレットです。|2023冬ChillSeason追加武器のルーレットです。|2024春FreshSeason追加武器のルーレットです。|2024夏SizzleSeason追加武器のルーレットです。/
-const weapons = require("./assets/weapons.js")
-const { sendReply, outputRandomWeapon, outputNoDuplicationRandomWeapon } = require("./assets/functions.js")
 
 // /reaction、/newweaponのリアクション付与処理
 client.on("messageCreate", async (message) => {
@@ -58,6 +58,7 @@ client.on("messageCreate", async (message) => {
 
 // リアクションされたときの処理
 client.on('messageReactionAdd', async (reaction, user) => {
+  // TODO: 別ユーザー発言に数字リアクションした時、勝手にBotが反応してしまう
   console.log(`${reaction.message.guild}で${user.tag}が${reaction.emoji.name}とリアクションしました`)
   // リアクションしたのがBotの場合 || emojiArrayの中の絵文字以外が押された場合はreturn
   if (user.bot || emojiArray.indexOf(reaction.emoji.name) === -1) return
@@ -83,7 +84,7 @@ client.on('messageReactionAdd', async (reaction, user) => {
 })
 
 // コマンド
-const commands = require("./assets/commands.js")
+import { commands } from "./assets/commands.js"
 client.on("interactionCreate", async (interaction) => {
   // リアクション中は以下コマンド無効にさせる
   if (isActionFlag) {
