@@ -1,4 +1,4 @@
-import { weapons }  from "./weapons.js"
+import { summer2024, allWeapon }  from "./weapons.js"
 // リプライを送る
 const sendReply = (message, text) => {
   message.reply(text)
@@ -40,18 +40,15 @@ const weaponDistribution = (interaction) => {
   const weaponSelect = interaction.options.getString('武器種選択')
   if (weaponSelect === 'all') {
     // 武器種が全ての場合
-    randomResultList = outputRandomWeapon(vcMemberList.size, weapons.allWeapon)
+    randomResultList = outputRandomWeapon(vcMemberList.size, allWeapon)
   } else if (weaponSelect === null) {
     // /newweapon使用の場合
-    const weaponsKey = Object.keys(weapons)
-    // weaponsの後ろから2番目のobjectを使用する(新シーズン武器object)
-    const rouletteWeapon = weapons[weaponsKey[weaponsKey.length - 2]]
-    randomResultList = outputRandomWeapon(vcMemberList.size, rouletteWeapon)
+    randomResultList = outputRandomWeapon(vcMemberList.size, summer2024)
   } else {
     // 武器種指定の場合
     randomResultList = outputRandomWeapon(
       vcMemberList.size,
-      weapons.allWeapon.filter(weapon => weapon.type === weaponSelect)
+      allWeapon.filter(weapon => weapon.type === weaponSelect)
     )
   }
   mentionMemberList.forEach((member,i) => {
@@ -61,7 +58,7 @@ const weaponDistribution = (interaction) => {
 }
 // 武器統一杯用処理
 const weaponUnification = (interaction) => {
-  const weapon = module.exports.outputRandomWeapon(2, weapons.allWeapon)
+  const weapon = outputRandomWeapon(2, allWeapon)
   interaction.reply(`${weapon[0]} vs ${weapon[1]}`)
 }
 

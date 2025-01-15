@@ -1,7 +1,7 @@
 import server from './server.js'
 server()
 import { Client, GatewayIntentBits, Partials } from "discord.js"
-import { weapons } from "./assets/weapons.js"
+import { summer2024, allWeapon } from "./assets/weapons.js"
 import { sendReply, outputRandomWeapon, outputNoDuplicationRandomWeapon } from "./assets/functions.js"
 
 const token = process.env.DISCORD_BOT_TOKEN
@@ -18,7 +18,7 @@ client.login(token);
 
 client.on("ready", () => {
   console.log(`${client.user.tag}がサーバーにログインしました。`);
-  client.user.setActivity('テスト');
+  client.user.setActivity('スプラトゥーン3');
 });
 
 
@@ -47,7 +47,7 @@ client.on("messageCreate", async (message) => {
     if(replaceUidMessage > 10 || replaceUidMessage < 1) {
       sendReply(message, '1~10の間で入力してください')
     } else {
-      const resultArray = outputRandomWeapon(replaceUidMessage, weapons.allWeapon)
+      const resultArray = outputRandomWeapon(replaceUidMessage, allWeapon)
       // const resultArray = outputNoDuplicationRandomWeapon(replaceUidMessage, allWeapon)
       client.channels.cache.get(message.channel.id).send(resultArray.toString().replace(/,/g, '\n'))
     }
@@ -66,11 +66,10 @@ client.on('messageReactionAdd', async (reaction, user) => {
   const message = await channel.messages.fetch(reaction.message.id)
   let rouletteWeapon = []
   if (/ルーレットするブキ数のリアクションを押してください。|武器ルーレット/.test(message.content)) {
-    rouletteWeapon = weapons.allWeapon
-  } else if (new RegExp(`${process.env.CURRENT_SEASON}追加武器のルーレットです。`).test(message.content)) {
-    const weaponsKey = Object.keys(weapons)
-    // weaponsの後ろから2番目のobjectを使用する(新シーズン武器object)
-    rouletteWeapon = weapons[weaponsKey[weaponsKey.length - 2]]
+    rouletteWeapon = allWeapon
+  // リアクションで/newweaponを使用していた時の名残↓
+  // } else if (new RegExp(`${process.env.CURRENT_SEASON}追加武器のルーレットです。`).test(message.content)) {
+  //   rouletteWeapon = summer2024
   } else {
     console.log('関係のないメッセージ')
     return
@@ -92,10 +91,13 @@ client.on("interactionCreate", async (interaction) => {
     return
   }
   if (!interaction.isChatInputCommand()) return
-  if (interaction.commandName in commands) {
-    commands[interaction.commandName].execute(interaction)
+  const inputCommandName = interaction.commandName
+  // 入力されたコマンドがcommandsにあったら
+  if (inputCommandName in commands) {
+    // commands.入力されたコマンド.executeを実行
+    commands[inputCommandName].execute(interaction)
   } else {
-    console.error(`存在しないコマンドを入力されました。${interaction.commandName}`)
+    console.error(`存在しないコマンドを入力されました。${inputCommandName}`)
     return
   }
 })
