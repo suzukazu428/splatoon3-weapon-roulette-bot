@@ -5,7 +5,7 @@ const sendReply = (message, text) => {
     .then(console.log("リプライ送信: " + text))
     .catch(e => console.error(e));
 }
-// 乱数を元に武器をルーレットして返す
+// 乱数を元にブキをルーレットして返す
 const outputRandomWeapon = (repeatNumber, sourceArray) => {
   let outputArray = []
   for(var i = 0; i < repeatNumber; i++) {
@@ -14,7 +14,7 @@ const outputRandomWeapon = (repeatNumber, sourceArray) => {
   }
   return outputArray
 }
-// 重複なしの武器ルーレット
+// 重複なしのブキルーレット
 const outputNoDuplicationRandomWeapon = (repeatNumber, sourceArray) => {
   let outputArray = []
   for(var i = 0; i < repeatNumber; i++) {
@@ -23,7 +23,7 @@ const outputNoDuplicationRandomWeapon = (repeatNumber, sourceArray) => {
   }
   return outputArray
 }
-// VCへ武器振り分け処理
+// VCへブキ振り分け処理
 const weaponDistribution = (interaction) => {
   const vcMemberList = interaction.options._hoistedOptions[0].channel.members
   if (!vcMemberList.size) {
@@ -37,15 +37,15 @@ const weaponDistribution = (interaction) => {
   vcMemberList.forEach(member => {
     mentionMemberList.push(member.user.toString())
   })
-  const weaponSelect = interaction.options.getString('武器種選択')
+  const weaponSelect = interaction.options.getString('ブキ種選択')
   if (weaponSelect === 'all') {
-    // 武器種が全ての場合
+    // ブキ種が全ての場合
     randomResultList = outputRandomWeapon(vcMemberList.size, allWeapon)
   } else if (weaponSelect === null) {
     // /newweapon使用の場合
     randomResultList = outputRandomWeapon(vcMemberList.size, summer2024)
   } else {
-    // 武器種指定の場合
+    // ブキ種指定の場合
     randomResultList = outputRandomWeapon(
       vcMemberList.size,
       allWeapon.filter(weapon => weapon.type === weaponSelect)
@@ -56,10 +56,21 @@ const weaponDistribution = (interaction) => {
   })
   interaction.reply(`${replyList.toString().replace(/,/g, '\n')}`)
 }
-// 武器統一杯用処理
+// ブキ統一杯用処理
 const weaponUnification = (interaction) => {
-  const weapon = outputRandomWeapon(2, allWeapon)
-  interaction.reply(`${weapon[0]} vs ${weapon[1]}`)
+  let randomResultList = []
+  const weaponSelect = interaction.options.getString('ブキ種選択')
+  if (weaponSelect === 'all') {
+    // ブキ種が全ての場合
+    randomResultList = outputRandomWeapon(2, allWeapon)
+  } else {
+    // ブキ種指定の場合
+    randomResultList = outputRandomWeapon(
+      2,
+      allWeapon.filter(weapon => weapon.type === weaponSelect)
+    )
+  }
+  interaction.reply(`${randomResultList[0]} vs ${randomResultList[1]}`)
 }
 
 export {
