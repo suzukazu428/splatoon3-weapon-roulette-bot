@@ -24,7 +24,7 @@ client.on("ready", () => {
 // メッセージを検知した時
 const emojiArray = ['1️⃣','2️⃣','3️⃣','4️⃣','5️⃣','6️⃣','7️⃣','8️⃣']
 let isActionFlag = false
-// const botMessage = /ルーレットするブキ数のリアクションを押してください。|2023春シーズン新武器のルーレットです。|2023夏シーズン新武器のルーレットです。|2023秋シーズン新武器のルーレットです。|2023冬ChillSeason追加武器のルーレットです。|2024春FreshSeason追加武器のルーレットです。|2024夏SizzleSeason追加武器のルーレットです。/
+// const botMessage = /ルーレットするブキ数のリアクションを押してください。|2023春シーズン新ブキのルーレットです。|2023夏シーズン新ブキのルーレットです。|2023秋シーズン新ブキのルーレットです。|2023冬ChillSeason追加ブキのルーレットです。|2024春FreshSeason追加ブキのルーレットです。|2024夏SizzleSeason追加ブキのルーレットです。/
 
 client.on("messageCreate", async (message) => {
   // Bot宛にメンションしていない場合
@@ -63,14 +63,14 @@ client.on('messageReactionAdd', async (reaction, user) => {
   if (/ルーレットするブキ数のリアクションを押してください。/.test(message.content)) {
     rouletteWeapon = allWeapon
   // リアクションで/newweaponを使用していた時の名残↓
-  // } else if (new RegExp(`${process.env.CURRENT_SEASON}追加武器のルーレットです。`).test(message.content)) {
+  // } else if (new RegExp(`${process.env.CURRENT_SEASON}追加ブキのルーレットです。`).test(message.content)) {
   //   rouletteWeapon = summer2024
   } else {
     console.log('関係のないメッセージ')
     return
   }
   const reactionNumber = emojiArray.indexOf(reaction.emoji.name) + 1
-  // 武器重複ありかなしか
+  // ブキ重複ありかなしか
   const resultArray = outputRandomWeapon(reactionNumber, rouletteWeapon)
   // const resultArray = outputNoDuplicationRandomWeapon(reactionNumber, rouletteWeapon)
   resultArray.push('----------')

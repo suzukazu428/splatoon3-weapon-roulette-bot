@@ -1,6 +1,6 @@
 {
   "name": "spla3roulette",
-  "description": "スプラトゥーン3の武器ルーレットBOTです。",
+  "description": "スプラトゥーン3のブキルーレットBOTです。",
   "type": "module",
   "main": "./main.js",
   "scripts": {

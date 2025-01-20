@@ -9,16 +9,16 @@ const info = {
   async execute(interaction) {
   await interaction.reply(`コマンド説明
 [/roulette]
-「/roulette」と入力後にボイスチャンネル、武器種を選択して発言すると、選択したボイスチャンネルに参加しているメンバーにメンションして選択した武器種内でランダムな武器を振り分けます。
+「/roulette」と入力後にボイスチャンネル、ブキ種を選択して発言すると、選択したボイスチャンネルに参加しているメンバーにメンションして選択したブキ種内でランダムなブキを振り分けます。
 
 [/reaction]
-「/reaction」と入力し発言すると、1~8のリアクションがBotのメッセージに付きます。お好みの数字のリアクションを押すことで、その数字分ランダムな武器を振り分けます。
+「/reaction」と入力し発言すると、1~8のリアクションがBotのメッセージに付きます。お好みの数字のリアクションを押すことで、その数字分ランダムなブキを振り分けます。
 
 [/newweapon]
-「/newweapon」と入力後にボイスチャンネルを選択して発言すると、発言時から最近追加された武器のみが対象のランダムな武器を振り分けます。
+「/newweapon」と入力後にボイスチャンネルを選択して発言すると、発言時から最近追加されたブキのみが対象のランダムなブキを振り分けます。
 
 [/unification]
-[/unification]と入力し発言すると、「ブキ統一vsブキ統一」用のメッセージを送信します。対象武器は全武器種から選択されます。
+[/unification]と入力し発言すると、「ブキ統一vsブキ統一」用のメッセージを送信します。対象ブキは全ブキ種から選択されます。
 `)
   }
 }
@@ -33,34 +33,34 @@ const reaction = {
 const newweapon = {
   data: new SlashCommandBuilder()
     .setName('newweapon')
-    .setDescription(`${process.env.CURRENT_SEASON}追加武器のルーレット用メッセージを送信します。`)
+    .setDescription(`${process.env.CURRENT_SEASON}追加ブキのルーレット用メッセージを送信します。`)
     .addChannelOption(option =>
       option
         .setName('ボイスチャンネル')
-        .setDescription('選択したボイスチャンネルに参加しているメンバーに武器を振り分けます。')
+        .setDescription('選択したボイスチャンネルに参加しているメンバーにブキを振り分けます。')
         .setRequired(true)
         .addChannelTypes(ChannelType.GuildVoice)
     ),
   async execute(interaction) {
-    // await interaction.reply(`${process.env.CURRENT_SEASON}追加武器のルーレットです。`)
+    // await interaction.reply(`${process.env.CURRENT_SEASON}追加ブキのルーレットです。`)
     weaponDistribution(interaction)
   }
 }
 const roulette = {
   data: new SlashCommandBuilder()
     .setName('roulette')
-    .setDescription('VCを選択し、武器をランダムに割り振ります。')
+    .setDescription('VCを選択し、ブキをランダムに割り振ります。')
     .addChannelOption(option =>
       option
         .setName('ボイスチャンネル')
-        .setDescription('選択したボイスチャンネルに参加しているメンバーに武器を振り分けます。')
+        .setDescription('選択したボイスチャンネルに参加しているメンバーにブキを振り分けます。')
         .setRequired(true)
         .addChannelTypes(ChannelType.GuildVoice)
     )
     .addStringOption(option =>
       option
-        .setName('武器種選択')
-        .setDescription('選択した武器種のみで武器を振り分けます。')
+        .setName('ブキ種選択')
+        .setDescription('選択したブキ種のみでブキを振り分けます。')
         .setRequired(true)
         .addChoices(
           {name: '全て', value: 'all'},
@@ -81,11 +81,30 @@ const roulette = {
     weaponDistribution(interaction)
   }
 }
-// TODO: 武器種絞り込み機能を追加する
 const unification = {
   data: new SlashCommandBuilder()
     .setName('unification')
-    .setDescription(`「ブキ統一vsブキ統一」用のメッセージを送信します。`),
+    .setDescription(`「ブキ統一vsブキ統一」用のメッセージを送信します。`)
+    .addStringOption(option =>
+      option
+        .setName('ブキ種選択')
+        .setDescription('選択したブキ種のみでブキを振り分けます。')
+        .setRequired(true)
+        .addChoices(
+          {name: '全て', value: 'all'},
+          {name: 'シューター', value: 'shooter'},
+          {name: 'マニューバー', value: 'maneuver'},
+          {name: 'ブラスター', value: 'blaster'},
+          {name: 'フデ', value: 'hude'},
+          {name: 'ローラー', value: 'roller'},
+          {name: 'スロッシャー', value: 'slosher'},
+          {name: 'スピナー', value: 'spinner'},
+          {name: 'シェルター', value: 'shelter'},
+          {name: 'チャージャー', value: 'charger'},
+          {name: 'ストリンガー', value: 'stringer'},
+          {name: 'ワイパー', value: 'wiper'}
+        )
+    ),
   async execute(interaction) {
     weaponUnification(interaction)
   }
