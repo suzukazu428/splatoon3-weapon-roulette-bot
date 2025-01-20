@@ -27,31 +27,25 @@ let isActionFlag = false
 // const botMessage = /ルーレットするブキ数のリアクションを押してください。|2023春シーズン新武器のルーレットです。|2023夏シーズン新武器のルーレットです。|2023秋シーズン新武器のルーレットです。|2023冬ChillSeason追加武器のルーレットです。|2024春FreshSeason追加武器のルーレットです。|2024夏SizzleSeason追加武器のルーレットです。/
 
 client.on("messageCreate", async (message) => {
-  // 当Botをメンションしていない場合は、該当メッセージ時以外はreturn
+  // Bot宛にメンションしていない場合
   if (!message.mentions.has(client.user, { ignoreEveryone: true })) {
-    // メッセージ送信元が当Botの場合 && 該当メッセージの場合/reactionのリアクション付与処理
-    if (message.author.id === client.user.id && /ルーレットするブキ数のリアクションを押してください。/.test(message.content)) {
-      isActionFlag = true
-      for (const emoji of emojiArray) {
-        await message.react(emoji)
-      }
-      isActionFlag = false
+    // 該当メッセージを発言していない　または 当Bot以外が発言した時はreturn
+    if(!/ルーレットするブキ数のリアクションを押してください。/.test(message.content) || message.author.id !== client.user.id) return
+    // /reactionのリアクション付与処理
+    isActionFlag = true
+    for (const emoji of emojiArray) {
+      await message.react(emoji)
     }
-    return
-  // Bot宛にメンションしていたら
+    isActionFlag = false
   } else {
+    // メンション後1~10の数値を送っていたらランダムブキルーレットする機能
     let replaceUidMessage = message.cleanContent.replace(`@${client.user.username}`, '')
-    // メンション後のメッセージを何か送っていたら && 数値を送っていたらランダムブキルーレットする機能
-    if (replaceUidMessage && !isNaN(replaceUidMessage)) {
-      if(replaceUidMessage > 10 || replaceUidMessage < 1) {
-        sendReply(message, '1~10の間で入力してください')
-      } else {
-        const resultArray = outputRandomWeapon(replaceUidMessage, allWeapon)
-        // const resultArray = outputNoDuplicationRandomWeapon(replaceUidMessage, allWeapon)
-        client.channels.cache.get(message.channel.id).send(resultArray.toString().replace(/,/g, '\n'))
-      }
+    if(!replaceUidMessage || replaceUidMessage > 10 || replaceUidMessage < 1 || isNaN(replaceUidMessage)) {
+      sendReply(message, "数値を1~10の間で入力してください。")
     } else {
-      sendReply(message, "数値を1~10の間で入力してください。");
+      const resultArray = outputRandomWeapon(replaceUidMessage, allWeapon)
+      // const resultArray = outputNoDuplicationRandomWeapon(replaceUidMessage, allWeapon)
+      client.channels.cache.get(message.channel.id).send(resultArray.toString().replace(/,/g, '\n'))
     }
   }
 })

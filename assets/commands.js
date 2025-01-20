@@ -9,13 +9,17 @@ const info = {
   async execute(interaction) {
   await interaction.reply(`コマンド説明
 [/roulette]
-「/roulette」と入力後にボイスチャンネルを選択して発言すると、選択したボイスチャンネルに参加しているメンバーにメンションしてランダムな武器を振り分けます。
+「/roulette」と入力後にボイスチャンネル、武器種を選択して発言すると、選択したボイスチャンネルに参加しているメンバーにメンションして選択した武器種内でランダムな武器を振り分けます。
 
 [/reaction]
 「/reaction」と入力し発言すると、1~8のリアクションがBotのメッセージに付きます。お好みの数字のリアクションを押すことで、その数字分ランダムな武器を振り分けます。
 
 [/newweapon]
-「/newweapon」と入力し発言すると、発言時の現シーズン追加武器のみが対象のランダムな武器を振り分けます。使い方は「/roulette」と同様です。`)
+「/newweapon」と入力後にボイスチャンネルを選択して発言すると、発言時から最近追加された武器のみが対象のランダムな武器を振り分けます。
+
+[/unification]
+[/unification]と入力し発言すると、「ブキ統一vsブキ統一」用のメッセージを送信します。対象武器は全武器種から選択されます。
+`)
   }
 }
 const reaction = {
@@ -77,6 +81,7 @@ const roulette = {
     weaponDistribution(interaction)
   }
 }
+// TODO: 武器種絞り込み機能を追加する
 const unification = {
   data: new SlashCommandBuilder()
     .setName('unification')
